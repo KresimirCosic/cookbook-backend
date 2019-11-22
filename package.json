@@ -1,0 +1,63 @@
+{
+  "name": "express-typescript-boilerplate",
+  "version": "1.1.1",
+  "description": "Express boilerplate with TypeScript",
+  "main": "./src/index.ts",
+  "scripts": {
+    "build:static": "mkdir -p ./static && rm -rf ./static/* && cd ../frontend && npm run build && cp -r ./build/* ../backend/static",
+    "build:dev": "rm -rf ./dev/* && webpack --watch --config ./config/webpack.dev.js",
+    "build:prod": "npm run build:static && mkdir -p ./prod && rm -rf ./prod/* && cp ./src/ssl/cert.* ./prod && webpack --config ./config/webpack.prod.js",
+    "serve:dev": "npm run build:dev",
+    "serve:dev:restart": "nodemon -r dotenv/config ./dev/index.server.js",
+    "serve:prod": "npm run build:prod && node -r dotenv/config ./prod/index.server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KresimirCosic/express-typescript-boilerplate.git"
+  },
+  "keywords": [
+    "javascript",
+    "js",
+    "node",
+    "nodejs",
+    "express",
+    "expressjs",
+    "typescript",
+    "webpack",
+    "ssl",
+    "tls",
+    "https"
+  ],
+  "author": "me",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KresimirCosic/express-typescript-boilerplate/issues"
+  },
+  "homepage": "https://github.com/KresimirCosic/express-typescript-boilerplate#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.7",
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "moment": "^2.24.0",
+    "mysql": "^2.17.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/cors": "^2.8.6",
+    "@types/express": "^4.17.2",
+    "@types/moment": "^2.13.0",
+    "@types/mysql": "^2.15.8",
+    "@types/node": "^12.12.8",
+    "dotenv": "^8.2.0",
+    "nodemon": "^1.19.4",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.2",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-merge": "^4.2.2",
+    "webpack-node-externals": "^1.7.2",
+    "webpack-shell-plugin": "^0.5.0"
+  }
+}

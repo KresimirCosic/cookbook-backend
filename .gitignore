@@ -1,0 +1,14 @@
+# General
+node_modules/
+bower_components/
+dev/
+prod/
+static/
+
+# Environment variables
+.env
+
+# SSL/TLS
+cert.key
+cert.pem
+req.cnf
