@@ -3,6 +3,7 @@ import express from "express";
 import path from "path";
 import { enableSSL, ISSLOptions } from "./ssl/options";
 import { startup } from "./utils/startup.util";
+import { api } from "./apis/index.api";
 
 // Global variables
 let PROTOCOL: "http" | "https";
@@ -11,6 +12,8 @@ const HOSTNAME = "localhost";
 const { NODE_ENV } = process.env;
 
 const app = express();
+
+app.use("/api", api);
 
 if (NODE_ENV === "development") {
   // Development phase
