@@ -45,7 +45,7 @@ login.post("/", (request, response) => {
               .default()
               .format(
                 "YYYY-MM-DD HH:mm:ss"
-              )}\', login_session_key = \'${sessionKey}\', WHERE email = \'${email}\';`,
+              )}\', login_session_key = \'${sessionKey}\' WHERE email = \'${email}\';`,
             async (setLoginError, setLoginResult, setLoginFields) => {
               // Sending session key in the cookie
               response.cookie("SK", sessionKey, cookieOptions);
