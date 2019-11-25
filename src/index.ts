@@ -13,6 +13,10 @@ const { NODE_ENV } = process.env;
 
 const app = express();
 
+// This middleware allows me to send requests in JSON format so the server parses the request properly.
+app.use(express.json());
+
+// API setup
 app.use("/api", api);
 
 if (NODE_ENV === "development") {
