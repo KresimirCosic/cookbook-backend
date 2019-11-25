@@ -2,14 +2,13 @@ import https from "https";
 import express from "express";
 import path from "path";
 import { enableSSL, ISSLOptions } from "./ssl/options";
-import { startup } from "./utils/startup.util";
+import { startup, NODE_ENV } from "./utils/startup.util";
 import { api } from "./apis/index.api";
 
 // Global variables
 let PROTOCOL: "http" | "https";
 let PORT: 8080 | 8443;
 const HOSTNAME = "localhost";
-const { NODE_ENV } = process.env;
 
 const app = express();
 

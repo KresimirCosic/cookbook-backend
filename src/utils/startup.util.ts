@@ -8,3 +8,15 @@ export const startup: (
   );
   console.log("To quit press Ctrl+C");
 };
+
+export const { NODE_ENV } = process.env;
+
+export const saltStrength = 12;
+
+export const serverKeyword = "AvEmArIa";
+
+export const cookieOptions = {
+  httpOnly: true,
+  sameSite: NODE_ENV === "development" ? false : true,
+  secure: NODE_ENV === "development" ? false : true
+};

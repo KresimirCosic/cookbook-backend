@@ -2,10 +2,9 @@ import express from "express";
 import bcrypt from "bcrypt";
 import * as moment from "moment";
 import { connection } from "../sql/connection.sql";
+import { saltStrength } from "../utils/startup.util";
 
 export const register = express.Router();
-
-const saltStrength = 12;
 
 register.post("/", (request, response) => {
   const { username, email, password } = request.body;
