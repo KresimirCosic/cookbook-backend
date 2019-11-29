@@ -24,7 +24,13 @@ if (NODE_ENV === "development") {
   PORT = 8080;
 
   // To enable cross-origin requests - I am sending API requests from https://localhost:3000 as it is standard with (SSL/TLS enabled) create-react-app
-  app.use(cors());
+  app.use(
+    cors({
+      // Required to make cookies work in development phase - cookies weren't being recieved on the frontend (since frontend is hosted on port 3000 and not served via Express and static content)
+      credentials: true,
+      origin: "https://localhost:3000"
+    })
+  );
 
   app.listen(PORT, () => startup(PROTOCOL, HOSTNAME, PORT));
 } else {
