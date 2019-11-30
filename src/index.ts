@@ -42,6 +42,10 @@ if (NODE_ENV === "development") {
   // Serving static content from the static folder - which is just a built frontend (i.e. create-react-app build)
   app.use(express.static(path.resolve(__dirname, "../static")));
 
+  app.get("/*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../static/index.html"));
+  });
+
   https
     .createServer(SSLOptions, app)
     .listen(PORT, () => startup(PROTOCOL, HOSTNAME, PORT));
@@ -49,3 +53,5 @@ if (NODE_ENV === "development") {
 
 // API route
 app.use("/api", api);
+
+app.get("/");
