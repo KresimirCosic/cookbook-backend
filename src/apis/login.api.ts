@@ -53,6 +53,7 @@ login.post("/", (request, response) => {
               response.cookie("UID", user.user_id, cookieOptions);
               // Sending basic information in the response
               response.status(200).json({
+                username: user.username,
                 status: 200,
                 email: user.email,
                 lastLogin: user.last_login
