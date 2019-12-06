@@ -1,6 +1,7 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import * as moment from "moment";
+
 import { connection } from "../sql/connection.sql";
 import { Session } from "../utils/session.util";
 import { cookieOptions } from "../utils/startup.util";
@@ -11,12 +12,14 @@ login.post("/", (request, response) => {
   const { email, password } = request.body;
 
   connection.query(
+    // Querying user based on email entered
     `SELECT * FROM user WHERE email = \'${email}\';`,
     async (selectUserError, selectUserResult, selectUserFields) => {
       const user = selectUserResult[0];
 
-      // User exists
+      // If the user exists
       if (user) {
+        // Checking to see if the password provided during login and the hashed stored one match
         const passwordMatches = await bcrypt.compare(password, user.password);
 
         // User still has not been verified
@@ -64,7 +67,7 @@ login.post("/", (request, response) => {
           );
         }
       }
-      // User does not exist
+      // If the user does not exist
       else {
         response.status(404).json({
           status: 404,

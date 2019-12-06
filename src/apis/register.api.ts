@@ -1,6 +1,7 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import * as moment from "moment";
+
 import { connection } from "../sql/connection.sql";
 import { saltStrength } from "../utils/startup.util";
 
@@ -14,7 +15,7 @@ register.post("/", (request, response) => {
     async (selectUserError, selectUserResult, selectUserFields) => {
       const user = selectUserResult[0];
 
-      // Email already exists
+      // If the email already exists in database
       if (user) {
         response.status(409).json({
           status: 409,
@@ -22,7 +23,9 @@ register.post("/", (request, response) => {
             "User with that email already exists. Please register with another email"
         });
         return;
-      } else {
+      }
+      // If the email doesn't already exist in database
+      else {
         const hashedPassword = await bcrypt.hash(password, saltStrength);
 
         connection.query(
