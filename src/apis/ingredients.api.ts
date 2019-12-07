@@ -13,10 +13,28 @@ ingredients.get("/", (request, response) => {
     async (validationError, validationResult, validationFields) => {
       // If the session key provided in the request cookie is equal to the one stored in the database after last login
       if (SK === validationResult[0].login_session_key) {
-        response.status(200).json({
-          status: 200,
-          data: validationResult[0]
-        });
+        // Using the UID from the request cookie to get the appropriate ingredients for the user
+        connection.query(
+          `SELECT im.name as ingredient_name, ui.amount_available, m.name as measure_unit
+        FROM user u
+        JOIN user_ingredient ui
+          USING (user_id)
+        JOIN ingredient_measure im
+          USING (ingredient_measure_id)
+        JOIN measure m
+          USING (measure_id)
+        WHERE user_id = ${UID}`,
+          async (
+            selectIngredientsError,
+            selectIngredientsResult,
+            selectIngredientFields
+          ) => {
+            response.status(200).json({
+              status: 200,
+              ingredients: selectIngredientsResult
+            });
+          }
+        );
       }
       // If the session key provided in the request cookie is not equal to the one stored in the database after last login
       else {
