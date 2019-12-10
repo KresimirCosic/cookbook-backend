@@ -18,9 +18,9 @@ register.post("/", (request, response) => {
       // If the email already exists in database
       if (user) {
         response.status(409).json({
-          status: 409,
+          error: true,
           message:
-            "User with that email already exists. Please register with another email"
+            "User with that email already exists. Please register with another email."
         });
         return;
       }
@@ -38,7 +38,7 @@ register.post("/", (request, response) => {
             .format("YYYY-MM-DD HH:mm:ss")}\', ${0}, ${null}, ${null});`,
           (insertUserError, insertUserResult, insertUserFields) => {
             response.status(201).json({
-              status: 201,
+              success: true,
               message: `User ${email} with ID: ${insertUserResult.insertId} has been created.`
             });
           }

@@ -25,15 +25,15 @@ login.post("/", (request, response) => {
         // User still has not been verified
         if (!user.verified) {
           response.status(403).json({
-            status: 403,
-            message: `User has not yet confirmed the registration link sent to the email: ${email}`
+            error: true,
+            message: `User has not yet confirmed the registration link sent to the email: ${email}.`
           });
           return;
         }
         // User is verified, but the passwords do not match
         else if (!passwordMatches) {
           response.status(401).json({
-            status: 401,
+            error: true,
             message: "Please check your password."
           });
           return;
@@ -56,12 +56,13 @@ login.post("/", (request, response) => {
               response.cookie("UID", user.user_id, cookieOptions);
               // Sending basic information in the response
               response.status(200).json({
+                success: true,
+                message: "Logged in successfully.",
                 username: user.username,
-                status: 200,
                 email: user.email,
                 lastLogin: user.last_login
                   ? user.last_login
-                  : "You have never logged in before"
+                  : "You have never logged in before."
               });
             }
           );
@@ -70,8 +71,8 @@ login.post("/", (request, response) => {
       // If the user does not exist
       else {
         response.status(404).json({
-          status: 404,
-          message: `No user with that email: ${email}`
+          error: true,
+          message: `No user with that email: ${email}.`
         });
         return;
       }
