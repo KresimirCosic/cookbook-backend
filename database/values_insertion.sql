@@ -1,7 +1,7 @@
 -- Create new user(s) via the application to correctly hash the password and change the verified field to enable user to log in
 
 -- Measures
-INSERT INTO measures VALUES 
+INSERT INTO measure VALUES 
 (null, 'gram'),
 (null, 'milliliter'),
 (null, 'piece');
