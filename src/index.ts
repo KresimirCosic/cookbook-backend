@@ -33,7 +33,13 @@ if (NODE_ENV === "development") {
   );
 
   app.listen(PORT, () => startup(PROTOCOL, HOSTNAME, PORT));
-} else {
+}
+
+// REST routes need to be between these two dev/prod configurations because I need CORS enabled in dev and I need REST enabled before sending the index.html in prod
+// API route
+app.use("/api", api);
+
+if (NODE_ENV === "production") {
   // Production phase
   PROTOCOL = "https";
   PORT = 8443;
@@ -42,7 +48,7 @@ if (NODE_ENV === "development") {
   // Serving static content from the static folder - which is just a built frontend (i.e. create-react-app build)
   app.use(express.static(path.resolve(__dirname, "../static")));
 
-  app.get("/*", (req, res) => {
+  app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "../static/index.html"));
   });
 
@@ -50,8 +56,3 @@ if (NODE_ENV === "development") {
     .createServer(SSLOptions, app)
     .listen(PORT, () => startup(PROTOCOL, HOSTNAME, PORT));
 }
-
-// API route
-app.use("/api", api);
-
-app.get("/");
