@@ -6,7 +6,6 @@ export const ingredients = express.Router();
 
 // Fetching user's ingredients based on request cookie
 ingredients.get("/", (request, response) => {
-  // User ID and login session key that are stored in the cookies of the request
   const { UID, SK } = request.cookies;
 
   connection.query(
@@ -14,9 +13,14 @@ ingredients.get("/", (request, response) => {
     (validationError, validationResult, validationFields) => {
       // If the session key provided in the request cookie is equal to the one stored in the database after last login
       if (SK === validationResult[0].login_session_key) {
-        // Using the UID from the request cookie to get the appropriate ingredients for the user
+        // Fetching all ingredients from the database and those related to the user separately
         connection.query(
-          `SELECT im.name as name, ui.amount_available as amount, m.name as unit
+          `SELECT im.ingredient_measure_id as id, im.name, m.name as unit
+        FROM ingredient_measure im
+        JOIN measure m
+          USING(measure_id);
+
+        SELECT ui.user_ingredient_id as id, im.name as name, ui.amount_available as amount, m.name as unit
         FROM user u
         JOIN user_ingredient ui
           USING (user_id)
@@ -24,16 +28,19 @@ ingredients.get("/", (request, response) => {
           USING (ingredient_measure_id)
         JOIN measure m
           USING (measure_id)
-        WHERE user_id = ${UID}`,
+        WHERE user_id = ${connection.escape(UID)};
+        `,
           (
             selectIngredientsError,
             selectIngredientsResult,
             selectIngredientFields
           ) => {
             response.status(200).json({
+              // Sending both all and user specific ingredients in the response, this will be useful in stores for handling new user specific ingredients to allow users to select an existing ingredient
               success: true,
-              message: "Successfully fetched your ingredients.",
-              ingredients: selectIngredientsResult
+              message: "Successfully fetched ingredients.",
+              allIngredients: selectIngredientsResult[0],
+              userIngredients: selectIngredientsResult[1]
             });
           }
         );
@@ -78,7 +85,7 @@ ingredients.post("/", (request, response) => {
             ) => {
               response.status(201).json({
                 success: true,
-                message: "Successfully created a new ingredient entry."
+                message: "Successfully created a new ingredient."
               });
             }
           );
@@ -109,7 +116,7 @@ ingredients.post("/", (request, response) => {
             ) => {
               response.status(201).json({
                 success: true,
-                message: "Successfully created a new user ingredient."
+                message: "Successfully created your new ingredient."
               });
             }
           );

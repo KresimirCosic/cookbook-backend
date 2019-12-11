@@ -6,5 +6,7 @@ const { DB_NAME, DB_USER, DB_PASSWORD } = process.env;
 export const connection = mysql.createConnection({
   user: DB_USER,
   password: DB_PASSWORD,
-  database: DB_NAME
+  database: DB_NAME,
+  // More prone to SQL injections, should escape entries whenever possible
+  multipleStatements: true
 });
