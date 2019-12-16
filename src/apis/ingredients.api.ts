@@ -15,7 +15,11 @@ ingredients.get("/", (request, response) => {
       if (SK === validationResult[0].login_session_key) {
         // Fetching all ingredients from the database and those related to the user separately
         connection.query(
-          `SELECT im.ingredient_measure_id as id, im.name, m.name as unit
+          `
+        SELECT m.measure_id as id, m.name
+        FROM measure m;
+
+        SELECT im.ingredient_measure_id as id, im.name, m.name as unit
         FROM ingredient_measure im
         JOIN measure m
           USING(measure_id);
@@ -39,8 +43,9 @@ ingredients.get("/", (request, response) => {
               // Sending both all and user specific ingredients in the response, this will be useful in stores for handling new user specific ingredients to allow users to select an existing ingredient
               success: true,
               message: "Successfully fetched ingredients.",
-              allIngredients: selectIngredientsResult[0],
-              userIngredients: selectIngredientsResult[1]
+              allMeasures: selectIngredientsResult[0],
+              allIngredients: selectIngredientsResult[1],
+              userIngredients: selectIngredientsResult[2]
             });
           }
         );
