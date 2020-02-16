@@ -42,8 +42,8 @@ ingredients.get("/", (request, response) => {
             response.status(200).json({
               // Sending both all and user specific ingredients in the response, this will be useful in stores for handling new user specific ingredients to allow users to select an existing ingredient
               success: true,
-              message: "Successfully fetched ingredients.",
-              allMeasures: selectIngredientsResult[0],
+              message: "Successfully fetched ingredients and measures.",
+              measures: selectIngredientsResult[0],
               allIngredients: selectIngredientsResult[1],
               userIngredients: selectIngredientsResult[2]
             });
